@@ -1,3 +1,3 @@
 export const Error = () => {
-  return <div>Error Page</div>;
+  return <div>Error Occurred</div>;
 };

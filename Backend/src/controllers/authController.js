@@ -13,7 +13,6 @@ export const register = async (req, res) => {
       password: hashedPassword,
       isMfaActive: false,
     });
-    console.log(newUser);
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
@@ -21,7 +20,6 @@ export const register = async (req, res) => {
   }
 };
 export const login = async (req, res) => {
-  console.log(req.user);
   res.status(200).json({
     message: "User logged in successfully",
     username: req.user.username,
@@ -42,16 +40,23 @@ export const authStatus = async (req, res) => {
 export const logout = async (req, res) => {
   if (!req.user) res.status(401).json({ message: "Unauthorized User" });
   req.logout((err) => {
-    if (err) return res.status(400).json({ message: "Error logging out user" });
-    res.status(200).json({ message: "User logged out successfully" });
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+      // when we are using express session by default it will create a cookie called connect.sid so we need to clear that cookie when the user logs out
+      res.clearCookie("connect.sid");
+      res.status(200).json({ message: "User logged out successfully" });
+    });
   });
 };
 export const setup2FA = async (req, res) => {
   try {
-    console.log("The user is", req.user);
     const user = req.user;
     var secret = speakeasy.generateSecret();
-    console.log(secret);
     user.twoFactorSecret = secret.base32;
     user.isMfaActive = true;
     await user.save();

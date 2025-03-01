@@ -2,15 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { loginUser, register } from "../service/authApi";
 
-export const LoginForm = () => {
-  const [isRegistered, setIsRegistered] = useState(true);
+// eslint-disable-next-line react/prop-types
+export const LoginForm = ({ onLoginSuccess }) => {
+  const [isRegistered, setIsRegistered] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  console.log("isRegistered", isRegistered);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -25,6 +24,7 @@ export const LoginForm = () => {
       setError("");
     } catch (error) {
       console.log(error);
+      setMessage("");
       setError("Something went wrong. Please try again later.");
     }
   };
@@ -37,14 +37,19 @@ export const LoginForm = () => {
       setUserName("");
       setPassword("");
       setError("");
+      onLoginSuccess(data);
     } catch (error) {
       console.log(error);
+      setMessage("");
       setError("Invalid Login Credentials. Please try again later.");
     }
   };
 
   const handleRegisterToggle = () => {
     setIsRegistered(!isRegistered);
+    setUserName("");
+    setPassword("");
+    setConfirmPassword("");
     setError("");
     setMessage("");
   };
