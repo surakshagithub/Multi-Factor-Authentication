@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:7001/api",
+  baseURL: "https://multi-factor-authentication-d9gn.vercel.app/api",
   // headers: {
   //   "Content-type": "application/json",
   // },

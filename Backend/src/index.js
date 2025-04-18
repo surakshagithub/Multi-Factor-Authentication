@@ -19,7 +19,11 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: ["http://localhost:3001"],
+  origin: [
+    "http://localhost:3001",
+    "https://multi-factor-authentication-sooty.vercel.app",
+  ],
+
   credentials: true, //access-control-allow-credentials:true
 };
 
@@ -41,6 +45,8 @@ app.use(passport.session());
 
 //Routes
 app.use("/api/auth", authRoutes);
+
+app.get("/", (req, res) => res.send("Express on Vercel"));
 
 // Listen app
 const PORT = process.env.PORT || 7002;
