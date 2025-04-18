@@ -23,7 +23,6 @@ const corsOptions = {
     "http://localhost:3001",
     "https://multi-factor-authentication-sooty.vercel.app",
   ],
-
   credentials: true, //access-control-allow-credentials:true
 };
 
